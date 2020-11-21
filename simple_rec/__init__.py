@@ -21,5 +21,6 @@ if __SIMPLE_REC_SETUP__:
     msg = f'Partial import of {__name__}=={__version__} during build process.' 
     print(msg)
 else:
+    from simple_rec import compute
     from simple_rec import filters
     from simple_rec.filters.collaborative import CollaborativeFilter

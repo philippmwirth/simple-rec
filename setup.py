@@ -57,7 +57,9 @@ if __name__ == '__main__':
     install_requires = load_requirements()
 
     packages = [
-        'simple_rec'
+        'simple_rec',
+        'simple_rec.compute',
+        'simple_rec.filters',
     ]
 
     project_urls = {}
