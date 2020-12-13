@@ -73,7 +73,9 @@ class _CoordinateList:
 
 
 class _SparseMatrix(_CoordinateList):
-    # TODO: docstrings, efficient queries (binary search), _get, _add, _del
+    """Sparse matrix implementation.
+
+    """
 
     def __init__(self,
                  row_index: List[int] = [],
@@ -129,7 +131,9 @@ class _SparseMatrix(_CoordinateList):
 
 
 class _SparseDecomposeMixin:
-    # TODO: docstrings
+    """Mixin for decomposing a sparse matrix M = U * V.t
+
+    """
 
     U: np.ndarray
     V: np.ndarray
@@ -138,7 +142,7 @@ class _SparseDecomposeMixin:
 
 
     def _row_step(self):
-        """
+        """Fits the row representations U to min. (M - U * V.t)^2
 
         """
         mse = 0.
@@ -162,7 +166,7 @@ class _SparseDecomposeMixin:
         return mse / len(self.U)
 
     def _col_step(self):
-        """
+        """Fits the column representation V to min. (M - U * V.t)^2
 
         """
         mse = 0.
@@ -193,7 +197,7 @@ class _SparseDecomposeMixin:
                    min_iter: int = 5,
                    max_iter: int = 10,
                    eps: float = 1e-5):
-        """
+        """Decomposes the matrix M = U * V.t iteratively.
 
         """
 
