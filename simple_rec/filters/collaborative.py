@@ -222,7 +222,7 @@ class CollaborativeFilter(_CollaborativeFilter, _SimilaritySearchMixin):
 
         # compute similarities and neareast neighbors
         rows, similarities = \
-            self._cosine_similarity(self.V[item_col], self.U)
+            self._cosine_similarity(self.V[item_col], self.U, normalize=False)
 
         # return only most similar users
         users = [self.row_to_user[row] for row in rows]
@@ -252,7 +252,7 @@ class CollaborativeFilter(_CollaborativeFilter, _SimilaritySearchMixin):
 
         # compute similarities and neareast neighbors
         cols, similarities = \
-            self._cosine_similarity(self.U[user_row], self.V)
+            self._cosine_similarity(self.U[user_row], self.V, normalize=False)
 
         # return only most similar items
         items = [self.col_to_item[col] for col in cols]

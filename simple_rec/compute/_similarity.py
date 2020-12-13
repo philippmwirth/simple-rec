@@ -9,13 +9,15 @@ class _SimilaritySearchMixin:
     def _cosine_similarity(self,
                            query: np.ndarray,
                            keys: np.ndarray,
-                           eps: float = 1e-8):
+                           eps: float = 1e-8,
+                           normalize=True):
         """Computes similarities between query and keys.
 
         """
         # normalize to unit length
-        query = query / (eps + np.linalg.norm(query))
-        keys = keys / (eps + np.linalg.norm(keys, axis=1)[:, None])
+        if normalize:
+            query = query / (eps + np.linalg.norm(query))
+            keys = keys / (eps + np.linalg.norm(keys, axis=1)[:, None])
 
         # compute cosine similarity and sort in descending order
         similarities = np.dot(keys, query)
