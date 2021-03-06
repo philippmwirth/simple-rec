@@ -1,23 +1,96 @@
 # Simple Rec
 
+Simple Rec is a light-weight collection of simple recommender systems.
+
+This is a personal project to highlight how easy it is to predict the 
+preferences and behavior of a user in a system. With Simple Rec, a few lines of code suffice to make accurate predictions about a user. As a consequence, a user can be targeted by advertisments, manipulated, and exploited by the service provider.
+
+
 ## Installation
 
 ### Installation from PyPI:
 ```bash
-pip install simple-rec
+pip3 install simple-rec
 ```
+
+### Installation from source:
+```bash
+git clone https://github.com/philippmwirth/simple-rec.git
+cd simple-rec
+pip3 install .
+```
+
+### Requirements
+The only requirements are [Numpy](https://numpy.org/) and Python3.
 
 ## Methods
 
 ### Collaborative Filtering
-To Do.
+Collaborative Filtering is a technique used by recommender systems. The idea is based on the assumption that people who agreed in the past will also agree in the future. Hence, users and items can be grouped by similar rating history. The implementation in Simple Rec relies on a matrix factorization of the sparse user-item matrix.
+
+### Content-based Filtering
+Coming soon!
 
 ## Examples
 All the examples shown below can be found in `examples/`.
 
 ### Collaborative Filtering
 
+**Item to User: Targeted Advertising**
+
+This example highlights how any user can become the target of an advertising strategy even if the user has never had any interest in the product being advertised.
+
+```python
+import simple_rec
+
+users = []
+items = []
+ratings = []
+
+def add_rating(user, item, rating):
+    """Adds a (user, activity, rating) triple to the lists.
+
+    """
+    users.append(user)
+    items.append(item)
+    ratings.append(rating)
+
+# say Alice, Bob, and Carol have participated in a
+# questionnaire about ice cream
+
+# Alice likes Strawberry and Chocolate
+add_rating('Alice', 'Strawberry', 1.)
+add_rating('Alice', 'Chocolate', 1.)
+
+# Bob also likes Strawberry and Chocolate
+add_rating('Bob', 'Strawberry', 0.8)
+add_rating('Bob', 'Chocolate', 1.)
+
+# Carol likes Vanilla and finds Chocolate disgusting
+add_rating('Carol', 'Vanilla', 1.)
+add_rating('Carol', 'Chocolate', 0.)
+
+# now, Bob, completely unrelated, decides to buy a new car
+add_rating('Bob', 'Ferrari', 1.)
+
+# since Alice and Bob had a similar taste before, Alice 
+# can now be targeted by an advertisment company for cars
+recommender = simple_rec.CollaborativeFilter(users, items, ratings)
+recommender.fit()
+
+who_to_target, _ = recommender.item_to_user('Ferrari', top=2)
+print('Ferrari should target:', who_to_target)
+
+```
+
+Output:
+```
+Ferrari should target: ['Bob', 'Alice']
+```
+
 **User to Item: Movie Ratings**
+
+A classic example is a database of user-movie ratings. The following code provides movie recommendations to a user based on his or her preferences in the past.
 
 ```python
 import simple_rec
@@ -69,6 +142,9 @@ Output:
 ```
 
 **User to User: A Simple Dating App**
+
+A simple dating app could match users based on their taste and preferences. For example, each user could be asked to fill out a questionnaire to get the necessary information. However, the information could also be extracted from
+other data, like images posted on the internet or from geotracking data.
 
 ```python
 import simple_rec
@@ -128,9 +204,3 @@ Output:
 > Carol <--90%--> Alice
 > Dan   <--83%--> Carol
 ```
-
-**Item to User: TODO**
-E.g. for a given topic, find users which might be interested.
-
-**Item to Item: TODO**
-E.g. based on your interest in X present Y (maybe FPL players).
